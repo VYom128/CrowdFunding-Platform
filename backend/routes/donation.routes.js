@@ -1,5 +1,6 @@
 import express from "express";
-import authMiddleware from "../middleware/auth.middleware.js";
+import { protect } from "../middleware/auth.middleware.js";
+
 import {
   createOrder,
   confirmDonation,
@@ -9,16 +10,16 @@ import {
 
 const router = express.Router();
 
-// Create a new donation order (requires authentication)
-router.post("/create-order", authMiddleware, createOrder);
+// Create a new donation order
+router.post("/create-order", protect, createOrder);
 
-// Confirm payment for a donation (requires authentication)
-router.post("/confirm", authMiddleware, confirmDonation);
+// Confirm payment
+router.post("/confirm", protect, confirmDonation);
 
-// Get a specific donation (requires authentication)
-router.get("/:donationId", authMiddleware, getDonationById);
+// Get donation by ID
+router.get("/:donationId", protect, getDonationById);
 
-// Get user's donation history (requires authentication)
-router.get("/", authMiddleware, getUserDonations);
+// Get user donations
+router.get("/", protect, getUserDonations);
 
 export default router;

@@ -2,7 +2,7 @@ import express from "express";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import User from "../models/UserModel.js";
-import authMiddleware from "../middleware/auth.middleware.js";
+import { protect } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
@@ -155,7 +155,7 @@ router.post("/login", async (req, res) => {
 /* =========================
    LOGOUT
 ========================= */
-router.post("/logout", authMiddleware, async (req, res) => {
+router.post("/logout", protect, async (req, res) => {
   try {
     res.status(200).json({
       success: true,
@@ -259,7 +259,7 @@ router.post("/refresh-token", async (req, res) => {
 /* =========================
    PROFILE
 ========================= */
-router.get("/profile", authMiddleware, async (req, res) => {
+router.get("/profile", protect, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select(
       "-passwordHash"
