@@ -6,7 +6,7 @@ import {
   createCampaign,
   editCampaign,
   addTimelineUpdate,
-} from "../controllers/campaign.controller.js";
+} from "../controllers/campaignController.js";
 import { protect, requireRole } from "../middleware/auth.middleware.js";
 import upload from "../middleware/upload.middleware.js";
 

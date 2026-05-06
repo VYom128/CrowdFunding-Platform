@@ -53,7 +53,7 @@ import cookieParser from "cookie-parser";
 import authRoutes from "./routes/auth.routes.js";
 import campaignRoutes from "./routes/campaign.routes.js";
 import donationRoutes from "./routes/donation.routes.js";
-import userRoutes from "./routes/user.routes.js";
+import userRoutes from "./routes/users.routes.js";
 import campaignerRoutes from "./routes/campaigner.routes.js";
 import adminRoutes from "./routes/admin.routes.js";
 import notificationRoutes from "./routes/notification.routes.js";
@@ -81,7 +81,7 @@ app.use(
 app.use("/api/auth", authRoutes);
 app.use("/api/campaigns", campaignRoutes);
 app.use("/api/donations", donationRoutes);
-app.use("/api/users", userRoutes);
+app.use("/api", userRoutes);
 app.use("/api/campaigner", campaignerRoutes);
 app.use("/api/admin", adminRoutes);
 app.use("/api/notifications", notificationRoutes);

@@ -147,7 +147,7 @@ export const createCampaign = async (req, res) => {
  * Only the campaign creator or an admin may edit.
  * Optionally replaces the cover image.
  */
-exports.editCampaign = async (req, res) => {
+export const editCampaign = async (req, res) => {
   try {
     const campaign = await Campaign.findById(req.params.id);
     if (!campaign) {
@@ -156,7 +156,6 @@ exports.editCampaign = async (req, res) => {
         .json({ success: false, message: "Campaign not found" });
     }
 
-    // Ownership check — Member 1's req.user._id vs campaign.creator
     const isOwner =
       campaign.creator.toString() === req.user._id.toString();
     const isAdmin = req.user.role === "admin";
@@ -177,7 +176,6 @@ exports.editCampaign = async (req, res) => {
     if (deadline) campaign.deadline = deadline;
     if (urgencyLevel) campaign.urgencyLevel = urgencyLevel;
 
-    // Replace cover image if a new file was uploaded
     if (req.file) {
       campaign.coverImage = await uploadToCloudinary(
         req.file.buffer,
@@ -198,7 +196,7 @@ exports.editCampaign = async (req, res) => {
  * Only the campaign creator or admin may post updates.
  * Notifies all donors via Member 5's createNotification utility.
  */
-exports.addTimelineUpdate = async (req, res) => {
+export const addTimelineUpdate = async (req, res) => {
   try {
     // Populate donations → donor so we can read each donor's _id for notifications
     const campaign = await Campaign.findById(req.params.id).populate({
