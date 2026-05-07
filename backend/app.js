@@ -14,9 +14,7 @@ import notificationRoutes from "./routes/notification.routes.js";
 import errorMiddleware from "./middleware/error.middleware.js";
 import connectDB from "./config/db.js";
 
-dotenv.config();
 
-connectDB();
 
 const app = express();
 
