@@ -9,10 +9,12 @@ const UserSchema = new mongoose.Schema(
       minlength: [2, "Name must be at least 2 characters"],
       maxlength: [50, "Name cannot exceed 50 characters"],
     },
+
     email: {
       type: String,
       required: [true, "Email is required"],
       unique: true,
+      index: true,
       lowercase: true,
       trim: true,
       match: [
@@ -20,24 +22,46 @@ const UserSchema = new mongoose.Schema(
         "Please enter a valid email",
       ],
     },
+
     passwordHash: {
       type: String,
       required: [true, "Password is required"],
       minlength: [6, "Password must be at least 6 characters"],
       select: false,
     },
+
     role: {
       type: String,
       enum: {
         values: ["donor", "campaigner", "admin"],
-        message: "Role must be either donor, creator, or admin",
+        message: "Role must be donor, campaigner, or admin",
       },
       default: "donor",
     },
-    isVerifiedCampaigner: { type: Boolean, default: false },
-    refreshToken: { type: String, select: false },
+
+    isVerifiedCampaigner: {
+      type: Boolean,
+      default: false,
+    },
+
+    refreshToken: {
+      type: String,
+      select: false,
+    },
+
+    otp: {
+      type: String,
+      select: false,
+    },
+
+    otpExpires: {
+      type: Date,
+      select: false,
+    },
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+  }
 );
 
 export default mongoose.model("User", UserSchema);
