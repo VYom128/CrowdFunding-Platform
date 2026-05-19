@@ -11,7 +11,6 @@ import Timeline from "../components/campaign/Timeline";
 import PageTransition from "../components/common/PageTransition";
 import Skeleton from "../components/common/Skeleton";
 import { useAuthStore } from "../store/authStore";
-import { mockCampaigns } from "../utils/mockData";
 import { formatCurrency } from "../utils/formatCurrency";
 
 export default function CampaignDetail() {
@@ -23,8 +22,7 @@ export default function CampaignDetail() {
     queryFn: () => getCampaignById(id),
     select: (data) => data.campaign || data,
   });
-  const fallback = mockCampaigns.find((campaign) => campaign._id === id) || mockCampaigns[0];
-  const campaign = query.data || fallback;
+  const campaign = query.data || {};
   const creator = campaign.creator || campaign.campaigner || {};
   const canManage = user?.role === "admin" || user?._id === creator._id || user?.id === creator.id;
   const deleteMutation = useMutation({

@@ -7,34 +7,24 @@ const campaignerRequestSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    fullName: {
+    campaignerType: {
       type: String,
-      required: [true, "Full name is required"],
+      required: [true, "Campaigner type is required"],
+      enum: ["Individual", "NGO/Nonprofit", "Company", "School/College", "Community Group", "Other"],
+    },
+    publicDisplayName: {
+      type: String,
+      required: [true, "Public display name is required"],
       trim: true,
     },
-    contact: {
+    campaignerReason: {
       type: String,
-      required: [true, "Contact number is required"],
+      required: [true, "Campaigner reason is required"],
       trim: true,
     },
-    organization: {
+    verificationDocumentUrl: {
       type: String,
-      trim: true,
-      default: "",
-    },
-    location: {
-      type: String,
-      trim: true,
-      default: "",
-    },
-    documentUrl: {
-      type: String,
-      required: [true, "Document is required"],
-    },
-    description: {
-      type: String,
-      required: [true, "Description is required"],
-      trim: true,
+      required: [true, "Verification document is required"],
     },
     status: {
       type: String,

@@ -17,11 +17,11 @@ export default function CreateCampaignForm() {
   const [values, setValues] = useState({
     title: "",
     description: "",
-    category: "treatment",
+    category: "Treatment",
     goalAmount: "",
     deadline: "",
     urgency: "normal",
-    image: null,
+    coverImage: null,
   });
   const [preview, setPreview] = useState("");
   const mutation = useMutation({
@@ -36,7 +36,7 @@ export default function CreateCampaignForm() {
   const update = (key) => (event) => setValues((current) => ({ ...current, [key]: event.target.value }));
   const updateFile = (event) => {
     const file = event.target.files?.[0];
-    setValues((current) => ({ ...current, image: file }));
+    setValues((current) => ({ ...current, coverImage: file }));
     if (file) setPreview(URL.createObjectURL(file));
   };
   const submit = (event) => {
@@ -68,10 +68,10 @@ export default function CreateCampaignForm() {
           <Input label="Campaign title" value={values.title} onChange={update("title")} required placeholder="Emergency surgery for Bruno" />
           <Textarea label="Rescue story" value={values.description} onChange={update("description")} required placeholder="Tell donors what happened and what treatment is needed." />
           <Select label="Category" value={values.category} onChange={update("category")}>
-            <option value="treatment">Treatment</option>
-            <option value="surgery">Surgery</option>
-            <option value="recovery">Recovery</option>
-            <option value="vaccination">Vaccination</option>
+            <option value="Treatment">Treatment</option>
+            <option value="Surgery">Surgery</option>
+            <option value="Recovery">Recovery</option>
+            <option value="Vaccination">Vaccination</option>
           </Select>
         </div>
       )}

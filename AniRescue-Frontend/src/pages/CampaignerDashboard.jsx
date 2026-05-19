@@ -10,12 +10,10 @@ import AnalyticsChart from "../components/dashboard/AnalyticsChart";
 import MedicalDocumentUploadForm from "../components/forms/MedicalDocumentUploadForm";
 import TimelineUpdateForm from "../components/forms/TimelineUpdateForm";
 import { formatCurrency } from "../utils/formatCurrency";
-import { mockCampaigns } from "../utils/mockData";
-
 export default function CampaignerDashboard() {
   const query = useQuery({ queryKey: ["campaigner-dashboard"], queryFn: getCampaignerDashboard, retry: false });
   const data = query.data || {};
-  const campaigns = data.campaigns || mockCampaigns;
+  const campaigns = data.campaigns || [];
   const firstCampaign = campaigns[0];
   return (
     <DashboardShell

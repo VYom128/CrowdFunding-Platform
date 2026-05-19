@@ -16,6 +16,7 @@ import {
 } from "../api/adminApi";
 import AdminTabs from "../components/admin/AdminTabs";
 import ApprovalTable from "../components/admin/ApprovalTable";
+import CampaignerApprovalTable from "../components/admin/CampaignerApprovalTable";
 import CampaignPreviewModal from "../components/admin/CampaignPreviewModal";
 import UserTable from "../components/admin/UserTable";
 import Button from "../components/common/Button";
@@ -23,8 +24,6 @@ import DashboardShell from "../components/dashboard/DashboardShell";
 import StatCard from "../components/dashboard/StatCard";
 import AnalyticsChart from "../components/dashboard/AnalyticsChart";
 import { formatCurrency } from "../utils/formatCurrency";
-import { mockCampaigns, mockStats } from "../utils/mockData";
-
 const tabs = [
   { id: "overview", label: "Overview" },
   { id: "campaigners", label: "Campaigner requests" },
@@ -52,8 +51,8 @@ export default function AdminDashboard() {
   const requestsQuery = useQuery({ queryKey: ["campaigner-requests"], queryFn: getCampaignerRequests, retry: false, select: (data) => data.requests || data || [] });
   const pendingQuery = useQuery({ queryKey: ["pending-campaigns"], queryFn: getPendingCampaigns, retry: false, select: (data) => data.campaigns || data || [] });
   const usersQuery = useQuery({ queryKey: ["admin-users"], queryFn: getUsers, retry: false, select: (data) => data.users || data || [] });
-  const stats = statsQuery.data?.stats || statsQuery.data || mockStats;
-  const pendingCampaigns = pendingQuery.data?.length ? pendingQuery.data : mockCampaigns.slice(0, 2);
+  const stats = statsQuery.data?.stats || statsQuery.data || {};
+  const pendingCampaigns = pendingQuery.data || [];
 
   const approveCampaignerMutation = useAdminAction(approveCampaigner, "Campaigner approved");
   const rejectCampaignerMutation = useAdminAction(rejectCampaigner, "Campaigner rejected");
@@ -81,8 +80,7 @@ export default function AdminDashboard() {
 
       {active === "campaigners" && (
         <div className="mt-8">
-          <ApprovalTable
-            type="campaigner"
+          <CampaignerApprovalTable
             rows={requestsQuery.data || []}
             onApprove={(id) => approveCampaignerMutation.mutate(id)}
             onReject={(id) => rejectCampaignerMutation.mutate(id)}

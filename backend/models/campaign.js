@@ -69,7 +69,7 @@ const campaignSchema = new mongoose.Schema(
     },
     category: {
       type: String,
-      enum: ["Emergency", "Medical", "Shelter", "Feeding"],
+      enum: ["Treatment", "Recovery", "Surgery", "Vaccination"],
       required: [true, "Category is required"],
     },
     goalAmount: {

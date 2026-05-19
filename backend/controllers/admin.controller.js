@@ -395,9 +395,6 @@ export const approveCampaigner = async (req, res, next) => {
 
     user.role = "campaigner";
     user.isVerifiedCampaigner = true;
-    // Copy organisation and location from the request into the user profile
-    user.organization = request.organization || "";
-    user.location = request.location || "";
     await user.save();
 
     await createNotification({

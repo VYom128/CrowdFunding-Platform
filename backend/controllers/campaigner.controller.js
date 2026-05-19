@@ -4,10 +4,10 @@ import uploadToCloudinary from "../utils/uploadToCloudinary.js";
 // POST /api/campaigner/apply
 export const applyAsCampaigner = async (req, res, next) => {
   try {
-    const { fullName, contact, organization, description } = req.body;
+    const { campaignerType, publicDisplayName, campaignerReason } = req.body;
 
-    if (!fullName || !contact || !description) {
-      return res.status(400).json({ message: "Full name, contact and description are required" });
+    if (!campaignerType || !publicDisplayName || !campaignerReason) {
+      return res.status(400).json({ message: "Campaigner type, public display name, and reason are required" });
     }
     if (req.user.role !== "donor") {
       return res.status(400).json({ message: "Only donors can apply as campaigners" });
@@ -25,15 +25,14 @@ export const applyAsCampaigner = async (req, res, next) => {
       return res.status(409).json({ message: "You already have a pending application" });
     }
 
-    const documentUrl = await uploadToCloudinary(req.file.buffer, "pawrescue/documents");
+    const verificationDocumentUrl = await uploadToCloudinary(req.file.buffer, "pawrescue/documents");
 
     const request = await CampaignerRequest.create({
       userId: req.user._id,
-      fullName,
-      contact,
-      organization: organization || "",
-      documentUrl,
-      description,
+      campaignerType,
+      publicDisplayName,
+      campaignerReason,
+      verificationDocumentUrl,
       status: "pending",
     });
 
@@ -50,6 +49,7 @@ export const applyAsCampaigner = async (req, res, next) => {
 export const getCampaignerStatus = async (req, res, next) => {
   try {
     const request = await CampaignerRequest.findOne({ userId: req.user._id })
+      .populate("userId", "name email")
       .sort({ createdAt: -1 });
 
     if (!request) {

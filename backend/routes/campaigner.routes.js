@@ -13,7 +13,7 @@ const router = express.Router();
 // All routes require auth
 router.use(authMiddleware);
 
-router.post("/apply", upload.single("document"), applyAsCampaigner);
+router.post("/apply", upload.single("verificationDocument"), applyAsCampaigner);
 router.get("/status", getCampaignerStatus);
 router.get(
   "/dashboard",

@@ -13,10 +13,10 @@ export default function CampaignFilters({ filters, setFilters }) {
         </div>
         <Select aria-label="Category" value={filters.category || ""} onChange={update("category")}>
           <option value="">All categories</option>
-          <option value="surgery">Surgery</option>
-          <option value="treatment">Treatment</option>
-          <option value="recovery">Recovery</option>
-          <option value="vaccination">Vaccination</option>
+          <option value="Surgery">Surgery</option>
+          <option value="Treatment">Treatment</option>
+          <option value="Recovery">Recovery</option>
+          <option value="Vaccination">Vaccination</option>
         </Select>
         <Select aria-label="Urgency" value={filters.urgency || ""} onChange={update("urgency")}>
           <option value="">Any urgency</option>

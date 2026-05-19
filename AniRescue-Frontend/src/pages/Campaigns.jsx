@@ -7,19 +7,17 @@ import CampaignFilters from "../components/campaign/CampaignFilters";
 import EmptyState from "../components/common/EmptyState";
 import PageTransition from "../components/common/PageTransition";
 import Skeleton from "../components/common/Skeleton";
-import { mockCampaigns } from "../utils/mockData";
-
 const normalizeList = (data) => data?.campaigns || data?.items || data || [];
 
 export default function Campaigns() {
   const [params] = useSearchParams();
   const [filters, setFilters] = useState({ urgency: params.get("urgency") || "", sort: "newest" });
   const query = useQuery({ queryKey: ["campaigns", filters], queryFn: () => getCampaigns(filters), select: normalizeList });
-  const campaigns = query.data?.length ? query.data : mockCampaigns;
+  const campaigns = query.data || [];
   const filtered = useMemo(() => {
     const search = filters.search?.toLowerCase() || "";
     return campaigns
-      .filter((item) => !filters.urgency || item.urgency === filters.urgency || (filters.urgency === "urgent" && item.isUrgent))
+      .filter((item) => !filters.urgency || item.urgencyLevel === filters.urgency)
       .filter((item) => !filters.category || item.category === filters.category)
       .filter((item) => !search || item.title.toLowerCase().includes(search) || item.description?.toLowerCase().includes(search));
   }, [campaigns, filters]);

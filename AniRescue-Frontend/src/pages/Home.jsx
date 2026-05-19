@@ -11,17 +11,17 @@ import PageTransition from "../components/common/PageTransition";
 import StatCard from "../components/dashboard/StatCard";
 import { fadeUp, staggerContainer } from "../animations/motionVariants";
 import { formatCurrency } from "../utils/formatCurrency";
-import { mockCampaigns, mockStats, rescueImage } from "../utils/mockData";
 
+const rescueImage = "https://images.unsplash.com/photo-1601758064224-c3c14733a968?auto=format&fit=crop&w=1400&q=80";
 const normalizeList = (data) => data?.campaigns || data?.items || data || [];
 
 export default function Home() {
   const urgentQuery = useQuery({ queryKey: ["urgent-campaigns"], queryFn: getUrgentCampaigns, select: normalizeList });
   const campaignsQuery = useQuery({ queryKey: ["campaigns", "home"], queryFn: () => getCampaigns({ limit: 6 }), select: normalizeList });
   const statsQuery = useQuery({ queryKey: ["platform-stats"], queryFn: getAdminStats, retry: false });
-  const urgent = urgentQuery.data?.length ? urgentQuery.data : mockCampaigns.filter((item) => item.isUrgent);
-  const campaigns = campaignsQuery.data?.length ? campaignsQuery.data : mockCampaigns;
-  const stats = statsQuery.data?.stats || statsQuery.data || mockStats;
+  const urgent = urgentQuery.data || [];
+  const campaigns = campaignsQuery.data || [];
+  const stats = statsQuery.data?.stats || statsQuery.data || {};
 
   return (
     <PageTransition>
