@@ -23,6 +23,7 @@ import Button from "../components/common/Button";
 import DashboardShell from "../components/dashboard/DashboardShell";
 import StatCard from "../components/dashboard/StatCard";
 import AnalyticsChart from "../components/dashboard/AnalyticsChart";
+import DonationsAndMessages from "../components/dashboard/DonationsAndMessages";
 import { formatCurrency } from "../utils/formatCurrency";
 const tabs = [
   { id: "overview", label: "Overview" },
@@ -68,13 +69,14 @@ export default function AdminDashboard() {
       {active === "overview" && (
         <div className="mt-8 space-y-8">
           <div className="grid gap-4 md:grid-cols-5">
-            <StatCard icon={Users} label="Total users" value={stats.totalUsers?.toLocaleString?.() || "12,800"} />
-            <StatCard icon={ShieldCheck} label="Campaigns" value={stats.totalCampaigns || 420} tone="teal" />
-            <StatCard icon={HeartHandshake} label="Donations" value={stats.totalDonations?.toLocaleString?.() || "18,420"} />
+            <StatCard icon={Users} label="Total users" value={stats.totalUsers?.toLocaleString?.() || 0} />
+            <StatCard icon={ShieldCheck} label="Campaigns" value={stats.totalCampaigns || 0} tone="teal" />
+            <StatCard icon={HeartHandshake} label="Donations" value={stats.totalDonations?.toLocaleString?.() || 0} />
             <StatCard icon={IndianRupee} label="Funds raised" value={formatCurrency(stats.totalFundsRaised)} />
-            <StatCard icon={BarChart3} label="Pending" value={stats.pendingApprovals || 18} tone="coral" />
+            <StatCard icon={BarChart3} label="Pending" value={stats.pendingApprovals || 0} tone="coral" />
           </div>
           <AnalyticsChart title="Donation trends" />
+          <DonationsAndMessages donations={stats.recentDonations || []} />
         </div>
       )}
 

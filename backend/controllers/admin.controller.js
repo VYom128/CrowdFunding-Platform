@@ -602,6 +602,7 @@ export const getAdminStats = async (req, res, next) => {
       donationAgg,
       pendingCampaigns,
       pendingCampaignerRequests,
+      recentDonations,
     ] = await Promise.all([
       User.countDocuments(),
       Campaign.countDocuments(),
@@ -611,6 +612,7 @@ export const getAdminStats = async (req, res, next) => {
       ]),
       Campaign.countDocuments({ status: "pending" }),
       CampaignerRequest.countDocuments({ status: "pending" }),
+      Donation.find({ status: "success" }).sort({ createdAt: -1 }).populate("donor", "name email").populate("campaign", "title").lean(),
     ]);
 
     const totalDonations = donationAgg[0]?.count || 0;
@@ -623,6 +625,7 @@ export const getAdminStats = async (req, res, next) => {
       fundsRaised,
       pendingCampaigns,
       pendingCampaignerRequests,
+      recentDonations,
     });
   } catch (error) {
     next(error);

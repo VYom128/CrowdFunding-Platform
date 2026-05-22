@@ -7,11 +7,9 @@ import Button from "../components/common/Button";
 import Badge from "../components/common/Badge";
 import DashboardShell from "../components/dashboard/DashboardShell";
 import StatCard from "../components/dashboard/StatCard";
-import AnalyticsChart from "../components/dashboard/AnalyticsChart";
-import MedicalDocumentUploadForm from "../components/forms/MedicalDocumentUploadForm";
-import TimelineUpdateForm from "../components/forms/TimelineUpdateForm";
+import CampaignAnalytics from "../components/dashboard/CampaignAnalytics";
+import DonationsAndMessages from "../components/dashboard/DonationsAndMessages";
 import EditCampaignModal from "../components/forms/EditCampaignModal";
-import TransparencyExpenseForm from "../components/forms/TransparencyExpenseForm";
 import { formatCurrency } from "../utils/formatCurrency";
 export default function CampaignerDashboard() {
   const query = useQuery({ queryKey: ["campaigner-dashboard"], queryFn: getCampaignerDashboard, retry: false });
@@ -27,46 +25,34 @@ export default function CampaignerDashboard() {
       actions={<Button as={Link} to="/campaigner/create"><Plus size={18} /> Create campaign</Button>}
     >
       <div className="grid gap-4 md:grid-cols-4">
-        <StatCard icon={Heart} label="Funds raised" value={formatCurrency(data.fundsRaised || 181000)} />
-        <StatCard icon={Users} label="Total donors" value={data.totalDonors || 341} tone="teal" />
+        <StatCard icon={Heart} label="Funds raised" value={formatCurrency(data.fundsRaised || 0)} />
+        <StatCard icon={Users} label="Total donors" value={data.totalDonors || 0} tone="teal" />
         <StatCard icon={FileText} label="Campaigns created" value={campaigns.length} />
         <StatCard icon={BarChart3} label="Approved" value={campaigns.filter((item) => item.status !== "rejected").length} tone="coral" />
       </div>
-      <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_390px]">
-        <div className="space-y-6">
-          <AnalyticsChart title="Donation momentum" data={data.trends || []} />
-          <div className="rounded-[1.75rem] border border-bark/10 bg-white p-5 shadow-card">
-            <h3 className="mb-4 text-lg font-extrabold text-ink">Campaign management</h3>
-            <div className="grid gap-4">
-              {campaigns.map((campaign) => (
-                <div key={campaign._id || campaign.id} className="flex flex-col justify-between gap-4 rounded-3xl bg-cream p-4 md:flex-row md:items-center">
-                  <div>
-                    <h4 className="font-extrabold text-ink">{campaign.title}</h4>
-                    <div className="mt-2 flex flex-wrap gap-2">
-                      <Badge variant="teal">{campaign.status || "approved"}</Badge>
-                      {campaign.isUrgent && <Badge variant="urgent">Urgent</Badge>}
-                    </div>
-                  </div>
-                  <div className="flex flex-wrap gap-2">
-                    <Button size="sm" variant="secondary" as={Link} to={`/campaigns/${campaign._id || campaign.id}`}>Analytics</Button>
-                    <Button size="sm" variant="outline" onClick={() => setEditingCampaign(campaign)}>Edit</Button>
-                    <Button size="sm">Upload documents</Button>
+      <div className="mt-8 space-y-6">
+        <CampaignAnalytics campaigns={campaigns} />
+        <div className="rounded-[1.75rem] border border-bark/10 bg-white p-5 shadow-card">
+          <h3 className="mb-4 text-lg font-extrabold text-ink">Campaign management</h3>
+          <div className="grid gap-4">
+            {campaigns.map((campaign) => (
+              <div key={campaign._id || campaign.id} className="flex flex-col justify-between gap-4 rounded-3xl bg-cream p-4 md:flex-row md:items-center">
+                <div>
+                  <h4 className="font-extrabold text-ink">{campaign.title}</h4>
+                  <div className="mt-2 flex flex-wrap gap-2">
+                    <Badge variant="teal">{campaign.status || "approved"}</Badge>
+                    {campaign.isUrgent && <Badge variant="urgent">Urgent</Badge>}
                   </div>
                 </div>
-              ))}
-            </div>
+                <div className="flex flex-wrap gap-2">
+                  <Button size="sm" variant="secondary" as={Link} to={`/campaigns/${campaign._id || campaign.id}`}>View</Button>
+                  <Button size="sm" variant="outline" onClick={() => setEditingCampaign(campaign)}>Edit</Button>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
-        <div className="space-y-6">
-          <MedicalDocumentUploadForm campaigns={campaigns} />
-          {campaigns.length > 0 && (
-            <div className="rounded-[1.75rem] border border-bark/10 bg-white p-5 shadow-card">
-              <h3 className="mb-4 text-lg font-extrabold text-ink">Timeline update</h3>
-              <TimelineUpdateForm campaigns={campaigns} />
-            </div>
-          )}
-          <TransparencyExpenseForm campaigns={campaigns} />
-        </div>
+        <DonationsAndMessages donations={data.recentDonations || []} />
       </div>
 
       {/* Edit Campaign Modal */}

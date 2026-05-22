@@ -175,12 +175,19 @@ export const getCampaignerDashboard = async (req, res, next) => {
     ]);
     const totalDonors = donorAgg[0]?.uniqueDonors || 0;
 
+    const recentDonations = await Donation.find({ campaign: { $in: campaignIds }, status: "success" })
+      .sort({ createdAt: -1 })
+      .populate("donor", "name email")
+      .populate("campaign", "title")
+      .lean();
+
     return res.status(200).json({
       campaignsCreated,
       fundsRaised,
       totalDonors,
       campaignsByStatus,
       campaigns,
+      recentDonations,
     });
   } catch (error) {
     next(error);

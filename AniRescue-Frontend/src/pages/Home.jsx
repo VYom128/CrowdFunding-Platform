@@ -68,10 +68,10 @@ export default function Home() {
 
       <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <div className="grid gap-4 md:grid-cols-4">
-          <StatCard icon={HeartHandshake} label="Total Donations" value={stats.totalDonations?.toLocaleString?.() || "18,420"} hint="Community-backed rescue care" />
-          <StatCard icon={Users} label="Total Donors" value={stats.totalDonors?.toLocaleString?.() || "9,234"} tone="teal" />
+          <StatCard icon={HeartHandshake} label="Total Donations" value={stats.totalDonations?.toLocaleString?.() || 0} hint="Community-backed rescue care" />
+          <StatCard icon={Users} label="Total Donors" value={stats.totalDonors?.toLocaleString?.() || 0} tone="teal" />
           <StatCard icon={IndianRupee} label="Total Funds Raised" value={formatCurrency(stats.totalFundsRaised)} />
-          <StatCard icon={ShieldCheck} label="Animals Rescued" value={stats.aniRescued?.toLocaleString?.() || "842"} tone="coral" />
+          <StatCard icon={ShieldCheck} label="Animals Rescued" value={stats.aniRescued?.toLocaleString?.() || 0} tone="coral" />
         </div>
       </section>
 
