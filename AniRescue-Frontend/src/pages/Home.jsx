@@ -13,7 +13,10 @@ import { fadeUp, staggerContainer } from "../animations/motionVariants";
 import { formatCurrency } from "../utils/formatCurrency";
 
 import rescueImage from "../../assets/homepage.jpg";
-const normalizeList = (data) => data?.campaigns || data?.items || data || [];
+const normalizeList = (data) => {
+  const list = data?.campaigns || data?.items || data;
+  return Array.isArray(list) ? list : [];
+};
 
 export default function Home() {
   const urgentQuery = useQuery({ queryKey: ["urgent-campaigns"], queryFn: getUrgentCampaigns, select: normalizeList });
